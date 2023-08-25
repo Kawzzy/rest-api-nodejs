@@ -1,15 +1,17 @@
-import fastify from "fastify";
+import fastify from 'fastify'
 
 // creates the application
-const app = fastify();
+const app = fastify()
 
 // creates a GET route
-app.get("/hello", () => {
+app.get('/hello', () => {
   return `Hello World`
 })
 
-app.listen({
-  port: 3333
-}).then(() => {
-  console.log(`Server running!`)
-})
+app
+  .listen({
+    port: 3333,
+  })
+  .then(() => {
+    console.log(`Server running!`)
+  })
