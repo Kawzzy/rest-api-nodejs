@@ -3,7 +3,25 @@ import { knex } from '../database'
 import { randomUUID } from 'crypto'
 import { FastifyInstance } from 'fastify'
 
+const getTransactionParamsSchema = z.object({
+  id: z.string().uuid(),
+})
+
 export async function transactionsRoutes(app: FastifyInstance) {
+  app.get('/', async () => {
+    const transactions = await knex('transactions').select()
+
+    return { transactions }
+  })
+
+  app.get('/:id', async (req) => {
+    const { id } = getTransactionParamsSchema.parse(req.params)
+
+    const transaction = await knex('transactions').where('id', id).first()
+
+    return { transaction }
+  })
+
   app.post('/', async (req, res) => {
     const createTransactionBodySchema = z.object({
       title: z.string(),
