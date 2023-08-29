@@ -1,9 +1,23 @@
-import { expect, test } from 'vitest'
+import request from 'supertest'
 
-test('Title: testing the post route', () => {
-  // here is done the HTTP request
-  const responseStatusCode = 201
+import { app } from '../src/app'
+import { afterAll, beforeAll, test } from 'vitest'
 
-  // here we make the validation of the HTTP response
-  expect(responseStatusCode).toEqual(201)
+beforeAll(async () => {
+  await app.ready() // waits all the plugins to get registers
+})
+
+afterAll(async () => {
+  await app.close() // drop the server connection
+})
+
+test('User can create a new transaction', async () => {
+  await request(app.server)
+    .post('/transactions')
+    .send({
+      title: 'Transaction test',
+      amount: 270,
+      type: 'credit',
+    })
+    .expect(201)
 })
