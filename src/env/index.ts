@@ -1,6 +1,8 @@
-import 'dotenv/config'
-
 import { z } from 'zod'
+import { config } from 'dotenv'
+
+// condition to define which environment variables to use
+process.env.NODE_ENV === 'test' ? config({ path: '.env.test' }) : config()
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('production'),

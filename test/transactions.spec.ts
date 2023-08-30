@@ -1,7 +1,8 @@
 import request from 'supertest'
 
 import { app } from '../src/app'
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { execSync } from 'node:child_process'
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 
 describe('Transactions routes', () => {
   beforeAll(async () => {
@@ -10,6 +11,13 @@ describe('Transactions routes', () => {
 
   afterAll(async () => {
     await app.close() // drop the server connection
+  })
+
+  beforeEach(async () => {
+    // the execSync() allows us to run terminal commands during our tests
+    execSync('npm run knex migrate:rollback --all') // we gonna undo all the migrations using the down() method
+    execSync('npm run knex migrate:latest') // we gonna execute all the migrations again
+    // this process ensures us that every test will have a brand new database
   })
 
   // to create a test, we can either use test() or it()
