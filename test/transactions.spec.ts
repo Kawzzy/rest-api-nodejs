@@ -4,6 +4,7 @@ import { app } from '../src/app'
 import { execSync } from 'node:child_process'
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 
+// the describe() method creates a "category" to group related tests
 describe('Transactions routes', () => {
   beforeAll(async () => {
     await app.ready() // waits all the plugins to get registers
